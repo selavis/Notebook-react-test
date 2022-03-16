@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import uuid from "react-uuid";
 import "./App.css";
 import Main from "./main/Main";
@@ -20,6 +20,7 @@ function App() {
       id: uuid(),
       title: "Note title",
       body: "",
+      // category: "",
       lastModified: Date.now(),
     };
 
@@ -56,7 +57,7 @@ function App() {
   return (
     <div className="App">
       <Sidebar
-        notes={filter.length === 0 ? notes : filter}
+        notes={!filter ? notes : filter}
         onAddNote={onAddNote}
         onDeleteNote={onDeleteNote}
         activeNote={activeNote}

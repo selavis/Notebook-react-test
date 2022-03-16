@@ -1,4 +1,5 @@
 // import ReactMarkdown from "react-markdown";
+import React from "react";
 
 const Main = ({ activeNote, onUpdateNote }) => {
   const onEditField = (field, value) => {
@@ -18,6 +19,7 @@ const Main = ({ activeNote, onUpdateNote }) => {
       <div className="app-main-note-edit">
         <h1>My Note</h1>
         <div className="details">
+          <p>Category: {activeNote.category}&nbsp; &nbsp; | &nbsp; &nbsp;</p>
           {/* Shfaqet koha e modifikuar */}
           <p className="note-meta">
             Last Modified{" "}
@@ -26,7 +28,6 @@ const Main = ({ activeNote, onUpdateNote }) => {
               minute: "2-digit",
             })}
           </p>{" "}
-          <p>&nbsp; &nbsp;|&nbsp; &nbsp;Category: {activeNote.category}</p>
         </div>
         <input
           className="title"

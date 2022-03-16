@@ -1,3 +1,4 @@
+import React from "react";
 const Sidebar = ({
   notes,
   onAddNote,
@@ -42,6 +43,7 @@ const Sidebar = ({
             </div>
 
             <p>{body && body.substr(0, 100) + "..."}</p>
+            <small>Category: {category}</small>
             <small className="note-meta">
               Last Modified{" "}
               {new Date(lastModified).toLocaleDateString("en-GB", {
@@ -49,7 +51,6 @@ const Sidebar = ({
                 minute: "2-digit",
               })}
             </small>
-            <small>Category: {category}</small>
           </div>
         ))}
       </div>
