@@ -12,6 +12,10 @@ const Main = ({ active, editNote }) => {
   }, [active]);
 
   const handleUpdate = (key, value) => setOnEdit({ ...onEdit, [key]: value });
+  //create a click event for the button
+  const handleClick = () => {
+    setOnEdit(null);
+  };
 
   return active ? (
     <div className="app-main">
