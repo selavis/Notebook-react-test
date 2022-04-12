@@ -1,7 +1,9 @@
+
 import React, { useEffect, useState } from "react";
 
 const Main = ({ active, editNote }) => {
   const [onEdit, setOnEdit] = useState(null);
+
 
   useEffect(() => {
     if (onEdit) {
