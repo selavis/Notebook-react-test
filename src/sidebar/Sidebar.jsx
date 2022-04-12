@@ -1,18 +1,17 @@
-import React from "react";
-const Sidebar = ({
-  notes,
-  onAddNote,
-  onDeleteNote,
-  activeNote,
-  setActiveNote,
-  onNoteSearch,
-}) => {
-  // Rilistimi i notes kur editojme nje liste
-  const sortedNotes = notes.sort((a, b) => b.lastModified - a.lastModified);
-  const handleChangeSearchText = (e) => {
-    const value = e.target.value.toLowerCase();
-    onNoteSearch(value);
-  };
+import React, { useMemo, useState } from "react";
+const Sidebar = ({ notes, active, addNote, setActive, deleteNote }) => {
+  const [searchString, setSearchString] = useState("");
+
+  const formatBody = (string) =>
+    string.length <= 100 ? string : `${string.substr(0, 100)}...`;
+
+  const filteredNotes = useMemo(
+    () =>
+      notes.filter(
+        (note) => note.title.toLowerCase().search(searchString) !== -1
+      ),
+    [notes, searchString]
+  );
 
   return (
     <div className="app-sidebar">
@@ -24,29 +23,31 @@ const Sidebar = ({
           type="text"
           className="search"
           placeholder="Search..."
-          onChange={handleChangeSearchText}
+          value={searchString}
+          onChange={(e) => setSearchString(e.target.value)}
         />
       </div>
       <div className="app-sidebar-header">
         <h1>All Notes</h1>
-        <button onClick={onAddNote}>Add</button>
+        <button onClick={addNote}>Add</button>
       </div>
       <div className="app-sidebar-notes">
-        {sortedNotes.map(({ id, title, body, lastModified, category }) => (
+        {filteredNotes.map((note, index) => (
           <div
-            className={`app-sidebar-note ${id === activeNote && "active"}`}
-            onClick={() => setActiveNote(id)}
+            className={`app-sidebar-note ${note.id === active && "active"}`}
+            onClick={() => setActive(note)}
+            key={index}
           >
             <div className="sidebar-note-title">
-              <strong>{"Note title" && title}</strong>
-              <button onClick={(e) => onDeleteNote(id)}>Delete</button>
+              <strong>{note.title ?? "Note title"}</strong>
+              <button onClick={() => deleteNote(note.id)}>Delete</button>
             </div>
 
-            <p>{body && body.substr(0, 100) + "..."}</p>
-            <small>Category: {category}</small>
+            <p>{formatBody(note.body)}</p>
+            <small>Category: {note.category}</small>
             <small className="note-meta">
               Last Modified{" "}
-              {new Date(lastModified).toLocaleDateString("en-GB", {
+              {new Date(note.lastModified).toLocaleDateString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
               })}

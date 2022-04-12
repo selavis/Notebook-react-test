@@ -1,41 +1,39 @@
-// import ReactMarkdown from "react-markdown";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Main = ({ activeNote, onUpdateNote }) => {
-  const onEditField = (field, value) => {
-    // Ben nje kopje te shenimit aktiv dhe behet update
-    onUpdateNote({
-      ...activeNote,
-      [field]: value,
-      lastModified: Date.now(),
-    });
-  };
+const Main = ({ active, editNote }) => {
+  const [onEdit, setOnEdit] = useState(null);
 
-  // Nqs nuk ka shenim aktiv
-  if (!activeNote) return <div className="no-active-note">No Active Note</div>;
+  useEffect(() => {
+    if (onEdit) {
+      editNote(onEdit);
+    }
+    setOnEdit(active);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
 
-  return (
+  const handleUpdate = (key, value) => setOnEdit({ ...onEdit, [key]: value });
+
+  return active ? (
     <div className="app-main">
       <div className="app-main-note-edit">
         <h1>My Note</h1>
         <div className="details">
-          <p>Category: {activeNote.category}&nbsp; &nbsp; | &nbsp; &nbsp;</p>
-          {/* Shfaqet koha e modifikuar */}
+          <p>Category: {onEdit?.category}&nbsp; &nbsp; | &nbsp; &nbsp;</p>
           <p className="note-meta">
             Last Modified{" "}
             {new Date().toLocaleDateString("en-GB", {
               hour: "2-digit",
               minute: "2-digit",
             })}
-          </p>{" "}
+          </p>
         </div>
         <input
           className="title"
           type="text"
           id="title"
           placeholder="Note Title"
-          value={activeNote.title}
-          onChange={(e) => onEditField("title", e.target.value)}
+          value={onEdit?.title}
+          onChange={(e) => handleUpdate("title", e.target.value)}
           autoFocus
         />
         <input
@@ -43,24 +41,20 @@ const Main = ({ activeNote, onUpdateNote }) => {
           type="text"
           id="category"
           placeholder="Category"
-          value={activeNote.category}
-          onChange={(e) => onEditField("category", e.target.value)}
+          value={onEdit?.category}
+          onChange={(e) => handleUpdate("category", e.target.value)}
           autoFocus
         />
         <textarea
           id="body"
           placeholder="Write your note here..."
-          value={activeNote.body}
-          onChange={(e) => onEditField("body", e.target.value)}
+          value={onEdit?.body}
+          onChange={(e) => handleUpdate("body", e.target.value)}
         />
       </div>
-      {/* <div className="app-main-note-preview">
-        <h1 className="preview-title">{activeNote.title}</h1>
-        <ReactMarkdown className="markdown-preview">
-          {activeNote.body}
-        </ReactMarkdown>
-      </div> */}
     </div>
+  ) : (
+    <div className="no-active-note">No Active Note</div>
   );
 };
 
