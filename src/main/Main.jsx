@@ -13,7 +13,7 @@ const Main = ({ active, editNote }) => {
 
   const handleUpdate = (key, value) => setOnEdit({ ...onEdit, [key]: value });
 
-  const eventButton = () => {
+  const renamedButton = () => {
     setOnEdit(null);
   };
 
