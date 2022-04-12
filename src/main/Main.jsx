@@ -1,17 +1,23 @@
-// import ReactMarkdown from "react-markdown";
+
 import React, { useEffect, useState } from "react";
 
 const Main = ({ active, editNote }) => {
   const [onEdit, setOnEdit] = useState(null);
+
 
   useEffect(() => {
     if (onEdit) {
       editNote(onEdit);
     }
     setOnEdit(active);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
   const handleUpdate = (key, value) => setOnEdit({ ...onEdit, [key]: value });
+
+  const handleClick = () => {
+    setOnEdit(null);
+  };
 
   return active ? (
     <div className="app-main">
